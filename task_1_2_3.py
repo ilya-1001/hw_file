@@ -22,24 +22,30 @@ def get_shop_list_by_dishes(dishes, person_count):
     for n in cook_book.keys():
         if n in dishes:
             for m in cook_book.get(n):
-                _dict = {m['ingredient_name']: {'measure': m['measure'],
+                dicts = {m['ingredient_name']: {'measure': m['measure'],
                                                 'quantity': int(m['quantity']) * person_count}}
-                result.update(_dict)
+                result.update(dicts)
     return result
 
 
 print(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
 
-x_files = [x for x in os.listdir() if x == '1.txt' or x == '2.txt' or x == '3.txt']
-x_files = list(reversed(x_files))
-with open('result.txt', 'a+') as file:
-    count = []
-    for x in x_files:
-        f = open(x).readlines()
-        count = (len(f))
-        file.write(x)
+list_files = [x for x in os.listdir() if x == '1.txt' or x == '2.txt' or x == '3.txt']
+new_dict = {}
+for names in list_files:
+    with open(names, 'r') as file:
+        text = file.read()
+    with open(names, 'r') as file:
+        f_lines = file.readlines()
+        count_lines = (len(f_lines))
+    _dict = {names: (count_lines, text)}
+    new_dict.update(_dict)
+sorted_dict = dict(sorted(new_dict.items(), key=lambda item: item[1]))
+with open('result.txt', 'w') as file:
+    for el in sorted_dict:
+        file.write(el)
         file.write('\n')
-        file.write(str(count))
+        file.write(str(sorted_dict[el][0]))
         file.write('\n')
-        res = open(x).read()
-        file.write(res)
+        file.write(sorted_dict[el][1])
+        file.write('\n')
