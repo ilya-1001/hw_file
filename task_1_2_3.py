@@ -30,18 +30,19 @@ def get_shop_list_by_dishes(dishes, person_count):
 
 print(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
 
-list_files = [x for x in os.listdir() if x == '1.txt' or x == '2.txt' or x == '3.txt']
+path = '/home/msi_alt_kde/text_files'
+list_files = [x for x in os.listdir(path) if x.endswith('.txt') and x.startswith(('1', '2', '3'))]
 new_dict = {}
 for names in list_files:
-    with open(names, 'r') as file:
-        text = file.read()
-    with open(names, 'r') as file:
-        f_lines = file.readlines()
-        count_lines = (len(f_lines))
+    with open(names, 'r', encoding='utf-8') as f:
+        count_lines = len(f.readlines())
+        f.seek(0)
+    with open(names, 'r', encoding='utf-8') as f:
+        text = f.read()
     _dict = {names: (count_lines, text)}
     new_dict.update(_dict)
 sorted_dict = dict(sorted(new_dict.items(), key=lambda item: item[1]))
-with open('result.txt', 'w') as file:
+with open('result.txt', 'w', encoding='utf-8') as file:
     for el in sorted_dict:
         file.write(el)
         file.write('\n')
@@ -49,3 +50,4 @@ with open('result.txt', 'w') as file:
         file.write('\n')
         file.write(sorted_dict[el][1])
         file.write('\n')
+        
